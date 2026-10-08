@@ -25,7 +25,7 @@ The notebook reads its data from `abm_outputs_research_plan_v7/`. Keep that fold
 RESULT_CACHE = Path("abm_outputs_research_plan_v7")
 ```
 
-The last cell re-runs four model cases live and checks them against the cached results. The tolerance is 1e-9.
+Section 13 re-runs four model cases live and checks them against the cached results. The tolerance is 1e-9.
 
 ## Contents
 
@@ -56,7 +56,7 @@ All numbers match the outputs saved in the original notebook. Only these display
 
 - **Cell 32 (power table).** It shows extra NaN rows, and seed counts appear as `53.0` instead of `53`. This is because the notebook reads `paired_policy_effects.csv` both as a summary table and as per-seed data, so the file has to hold both blocks.
 - **Wide tables.** Some wrap at different column positions.
-- **Last cell.** It reports a different file count and different modification times.
+- **Section 13 verification cell.** It reports a different file count and different modification times.
 - **Cell 14.** It also displays the by-state and by-age ACS tables.
 - **Cell 22.** `PolicySocialABM` and some of its methods carry docstrings; the code is unchanged.
 
@@ -67,3 +67,24 @@ All numbers match the outputs saved in the original notebook. Only these display
 From the repository root, run `python rebuild_scripts/worker.py '{"policy":"combined","seed":201}'` (adjust quoting for your shell). From `rebuild_scripts/`, `import worker; worker.run({"policy": "combined", "seed": 201})` works as well. For a batch, use `python rebuild_scripts/batch.py cases.json results.pkl --jobs 2`; `cases.json` is a list of case objects.
 
 To recompute the empirical anchor from locally downloaded Census 2023 1-year person ZIPs, use `python rebuild_scripts/acs_pums.py path/to/pums`. The script documents ZIP names, filters and the Puerto Rico scope distinction. No full empirical rebuild is claimed without those source ZIPs.
+## Interactive migration animation
+
+Run section 14 at the end of `0914-1_v8.ipynb`. It displays an interactive replay and exports `migration_animation.html`. Trust the notebook to enable JavaScript in its embedded frame, or open the exported HTML directly in a modern browser. The export works offline; no new packages, map service, or external assets are needed.
+
+Use **Play / Pause**, **Restart**, the year slider and the speed selector (0.5–4×). Switch between **No policy** and **Combined policy · intensity 1**. Both use 600 agents, 12 years, seed 201, medium interaction strength, and the notebook's existing calibrated parameters and policy function. The map shows accepted moves, social-chain moves, annual route totals, target-state inflow and end-year state population.
+
+One dot is one recorded accepted agent move, including each member of a moving household. Route totals are validated against the model's annual inflow/outflow and move rate. The model has annual time steps: within-year ordering, travel paths and timing are illustrative. End-year populations also include demographic replacement. The animation runs two additional model instances without changing the model or the preceding analysis.
+
+To export without opening Jupyter, run from the repository root:
+
+```sh
+python migration_animation.py --output migration_animation.html
+```
+
+For a smaller demonstration, add `--agents 100 --years 3 --seed 201`. The loader executes the existing notebook definitions and reads the supplied CSV cache. Keep `migration_animation.py`, `migration_animation_template.html` and the notebook together. The generated HTML needs no supporting files.
+
+Run the animation tests with the existing requirements installed:
+
+```sh
+python -m unittest -v test_migration_animation
+```
