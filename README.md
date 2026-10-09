@@ -23,6 +23,8 @@ On macOS/Linux use `.venv/bin/python` instead. An existing environment with the
 pinned dependencies also works. The pinned `imageio-ffmpeg==0.6.0` package
 supplies FFmpeg for `--video`. No environment or FFmpeg binary is committed.
 
+Section 13 of `0914-1_v8.ipynb` re-runs four model cases live and checks them against the cached results (tolerance 1e-9).
+
 The command executes five diagnostic Notebook cells in a real kernel, verifies
 input hashes, runs baseline and intensity-1 combined policy using 600 agents,
 12 years and seed 201, checks migration events against the independent metrics
@@ -144,5 +146,9 @@ and the fitted parameter hash. Full protocols, seed lists, bootstrap results
 and rejected candidates accompany the report. Repeat cases match exactly in
 the pinned Windows environment; other numerical libraries require checking.
 
-The animation functionality also appears in open PR #39. This PR includes that
-code to provide one complete project; it does not depend on merging #39 first.
+The standalone published-profile animation (`migration_animation.py`,
+notebook section 14) was merged to `master` in #39 and is included here:
+
+```powershell
+.venv/Scripts/python.exe migration_animation.py --output migration_animation.html
+```
