@@ -1,8 +1,0 @@
-{
-  "seed": 201,
-  "n_agents": 600,
-  "years": 12,
-  "policy": "combined",
-  "intensity": 1.0,
-  "interaction": "medium"
-}

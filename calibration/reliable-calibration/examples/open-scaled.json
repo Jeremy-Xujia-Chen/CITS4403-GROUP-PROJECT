@@ -1,8 +1,0 @@
-{
-  "seed": 1901,
-  "n_agents": 600,
-  "years": 12,
-  "capacity_mode": "scaled",
-  "policy": "baseline",
-  "intensity": 0.0
-}
