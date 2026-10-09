@@ -11,12 +11,34 @@ except ImportError:
 _namespace = None
 
 
+def validate_case(case, ns):
+    """Raise ValueError with a clear message for the first invalid field of a case."""
+    def choice(field, value, valid):
+        if value not in valid:
+            raise ValueError(f"Unknown {field} {value!r}; expected one of {sorted(valid)}.")
+
+    choice("interaction", case.get("interaction", "medium"), ns["INTERACTION_LEVELS"])
+    choice("policy", case.get("policy", "baseline"), ns["POLICY_TYPES"])
+    choice("target_state", case.get("target_state", ns["FOCAL_STATE"]), ns["STATE_CODES"])
+    if "shock" in case:
+        choice("shock", case["shock"], ns["SHOCK_SCENARIOS"])
+    if "n_agents" in case and int(case["n_agents"]) < 2:
+        raise ValueError(f"n_agents must be at least 2, got {case['n_agents']!r}.")
+    if "years" in case and int(case["years"]) < 1:
+        raise ValueError(f"years must be at least 1, got {case['years']!r}.")
+    if float(case.get("intensity", 1.0)) < 0:
+        raise ValueError(f"intensity must not be negative, got {case['intensity']!r}.")
+    if "capacity_mode" in case and "external_rate" not in case:
+        raise ValueError("capacity_mode requires external_rate.")
+
+
 def run(case):
     global _namespace
     if _namespace is None:
         _namespace = v8lib.load()
     ns = _namespace
     case = dict(case)
+    validate_case(case, ns)
     seed = int(case.get("seed", 201))
     interaction = case.get("interaction", "medium")
     target = case.get("target_state", ns["FOCAL_STATE"])
