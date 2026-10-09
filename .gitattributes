@@ -1,0 +1,10 @@
+# Normal source files use portable LF line endings.
+* text=auto eol=lf
+
+# The calibration artifact records exact byte hashes. Never apply checkout
+# newline conversions to its source fixtures, reconstructed inputs or evidence.
+calibration/** -text whitespace=cr-at-eol
+
+*.mp4 -text
+*.png -text
+*.zip -text

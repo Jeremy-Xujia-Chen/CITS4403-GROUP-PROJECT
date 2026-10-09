@@ -1,0 +1,7 @@
+{
+  "seed": 1901,
+  "n_agents": 600,
+  "years": 12,
+  "network_decay": 2.0,
+  "recalibrated_network": true
+}

@@ -1,0 +1,17 @@
+{
+  "source_commit": "a376c12c6c6b94e96c0454fd9f70b3d6f585fd31",
+  "animation_source_commit": "23f0e56553973b844e478f3445bb637f9c120073",
+  "unchanged_model_definition_cells": [
+    22,
+    28,
+    37,
+    67,
+    69
+  ],
+  "precision_rounding_cells": [
+    67,
+    69
+  ],
+  "fitted_parameters_sha256": "444d6a3dc93cedc8740e3c196691831b96bc91014d7e74888f9704b8d90ecf78",
+  "legacy_policy_caches_unchanged": true
+}

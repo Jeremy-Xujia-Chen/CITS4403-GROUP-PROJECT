@@ -1,90 +1,154 @@
 # CITS4403 Group Project
 
-Young-adult interstate migration: policy incentives, social networks and capacity feedback.
+An eight-state agent-based model of young-adult interstate migration, housing,
+jobs and social attachment. States: CA, TX, NY, FL, MA, NC, IL and WA.
 
-A spatial agent-based model (ABM) of 18-35 year-olds moving between eight US states
-(CA, TX, NY, FL, MA, NC, IL, WA). The core question:
+This complete project includes the published analysis, interactive migration
+animation, a separately fitted parameter profile, full calibration records,
+an executed validation Notebook, and an MP4 demonstration of the new profile.
+Model class/function definitions retain the published V8 ASTs. Historical policy
+results are explicitly labelled so they are not mistaken for new-fit results.
 
-> How strong must a geographically targeted housing-and-employment policy be to overcome
-> young adults' social attachment, and when do migration chains and local capacity
-> constraints amplify or offset that response?
+## Install and run the new profile
 
-## How to run
+Use **Python 3.10.18**. From this directory on Windows:
 
-1. Install Python 3.10 and the dependencies:
-
-   ```
-   pip install -r requirements.txt jupyter
-   ```
-
-2. Open `0914-1_v8.ipynb` from inside this folder and choose **Run All**. A full run takes about 30 seconds.
-
-The notebook reads its data from `abm_outputs_research_plan_v7/`. Keep that folder name and keep it next to the notebook. The path is hard-coded in cell 14:
-
-```python
-RESULT_CACHE = Path("abm_outputs_research_plan_v7")
+```powershell
+python -m venv .venv
+.venv/Scripts/python.exe -m pip install -r requirements-project.txt
+.venv/Scripts/python.exe run_project.py --profile calibrated --video
 ```
 
-Section 13 re-runs four model cases live and checks them against the cached results. The tolerance is 1e-9.
+On macOS/Linux use `.venv/bin/python` instead. An existing environment with the
+pinned dependencies also works. The pinned `imageio-ffmpeg==0.6.0` package
+supplies FFmpeg for `--video`. No environment or FFmpeg binary is committed.
 
-## Contents
+Section 13 of `0914-1_v8.ipynb` re-runs four model cases live and checks them against the cached results (tolerance 1e-9).
 
-| Path | Description |
-|---|---|
-| `0914-1_v8.ipynb` | The main notebook. All model code lives here (`PolicySocialABM` in cell 22); saved outputs are kept |
-| `abm_outputs_research_plan_v7/` | All 29 CSV files the notebook needs |
-| `abm_data/` | The 4 CSV files that survived in the original cache. They are identical copies of files already in `abm_outputs_research_plan_v7/`, and the notebook does not use this folder |
-| `PROVENANCE.csv` | Source, run settings and verification result for every CSV |
-| `rebuild_scripts/` | Scripts used to rebuild the CSVs. They load the model code from the v8 notebook directly (see below) |
-| `requirements.txt` | Package versions from the original author's environment |
+The command executes five diagnostic Notebook cells in a real kernel, verifies
+input hashes, runs baseline and intensity-1 combined policy using 600 agents,
+12 years and seed 201, checks migration events against the independent metrics
+entry point, exports an offline HTML animation, and renders/decodes every MP4
+frame. Outputs:
 
-## Where the data come from
+- `results/calibrated/migration-animation.html`: playback, restart, year slider,
+  speed and scenario controls; no external assets required.
+- `results/calibrated/migration-comparison.mp4`: 30-second, 720p demonstration.
+- `results/calibrated/migration-events.json` and `run-verification.json`: actual
+  accepted moves, parameter SHA256 and resolved settings.
+- `calibration/results/calibration-validation.ipynb` and `.html`: executed
+  diagnostic Notebook with two live repeated cases and validation records.
 
-The original cache folder held only 4 of the 29 CSV files; the other 25 were lost. They were restored as follows. `PROVENANCE.csv` gives the details for each file.
+Open `results/index.html` for video, animation and report links. Recorded events
+are real simulator outputs; paths and within-year timing are illustrative.
+Population labels include demographic replacement. A single demonstration
+seed and its video do not estimate policy effects.
 
-- **Real data (4 files).** The ACS files were recomputed from the 2023 ACS 1-year PUMS microdata. They match the outputs saved in v8 exactly.
-- **Re-simulated (17 files).** These were re-run with the model code in the v8 notebook. The original agent counts, horizons and random seeds were recovered by matching the saved outputs, and every printed digit matches.
-- **Rebuilt from v8's printed output (4 files).** These are entered from the values the notebook printed, not simulated:
-  - `move_rate_calibration.csv` was produced by an earlier model build and cannot be reproduced with v8 code.
-  - `state_competition_summary.csv` cannot be re-simulated because its incentive formula is not in v8.
-  - The two BRFSS tables.
-- **Original files (4 files).** These are unchanged: the intensity sweeps, network decay and open system results.
+## What was fitted and checked
 
-## Differences from the saved notebook output
+Registry: `calibration/reliable-calibration/parameters.json`.
+Report: `calibration/results/reliable-calibration-report.html` (also Markdown).
+The independently rebuilt ACS target is **3.87458%**:
 
-All numbers match the outputs saved in the original notebook. Only these display details differ:
+| Design | Stay beta | Mean of 32 disjoint validation seeds |
+|---|---:|---:|
+| 1000 agents, 20 years | 3.8250 | 3.87094% |
+| 600 agents, 12 years | 3.8200 | 3.87630% |
 
-- **Cell 32 (power table).** It shows extra NaN rows, and seed counts appear as `53.0` instead of `53`. This is because the notebook reads `paired_policy_effects.csv` both as a summary table and as per-seed data, so the file has to hold both blocks.
-- **Wide tables.** Some wrap at different column positions.
-- **Section 13 verification cell.** It reports a different file count and different modification times.
-- **Cell 14.** It also displays the by-state and by-age ACS tables.
-- **Cell 22.** `PolicySocialABM` and some of its methods carry docstrings; the code is unchanged.
+Both pass the declared simulation checks. These are conditional simulator fits,
+not new real-world validation. The 1000x20 beta failed one expanded 600x12
+transfer diagnostic; that failure is retained, and the 600x12 fit has a separate
+training protocol and fresh validation seeds. Their bootstrap intervals overlap.
+Other designs require checking.
 
-## Rebuild scripts and data provenance
+Six route coefficients and seven destination effects are fitted to 50 verified
+IRS routes with origin-group cross-validation. Historical IL/WA holdout RMSE
+improves from 0.11559 to 0.09954; that holdout had already been seen during past
+development. IRS tax-return routes are macro proxies, not young-adult-only data.
+Rent/distance uncertainty remains wide. Priors, bounds and eight-origin scope
+limit identification; these estimates are not causal effects.
 
-`PROVENANCE.csv` records the source, settings and limitations of all 29 cached CSVs. `abm_data/` preserves four byte-identical copies of the original cache files; it is unused by the notebook. The notebook reads `abm_outputs_research_plan_v7/` instead.
+Network decay 2/5 pass paired baseline checks. Decay 10 fails and is excluded
+from defaults. Shared/scaled open-system attempt rates 0.0940/0.0678 pass checks
+against the raw PUMS outside-eight-state origin share 0.6202649264. These are
+simulator controls, not observed human migration probabilities. Social,
+demographic and policy scenario coefficients remain assumptions.
 
-From the repository root, run `python rebuild_scripts/worker.py '{"policy":"combined","seed":201}'` (adjust quoting for your shell). From `rebuild_scripts/`, `import worker; worker.run({"policy": "combined", "seed": 201})` works as well. For a batch, use `python rebuild_scripts/batch.py cases.json results.pkl --jobs 2`; `cases.json` is a list of case objects.
+## Repeat fitting and run individual cases
 
-To recompute the empirical anchor from locally downloaded Census 2023 1-year person ZIPs, use `python rebuild_scripts/acs_pums.py path/to/pums`. The script documents ZIP names, filters and the Puerto Rico scope distinction. No full empirical rebuild is claimed without those source ZIPs.
-## Interactive migration animation
+On Windows:
 
-Run section 14 at the end of `0914-1_v8.ipynb`. It displays an interactive replay and exports `migration_animation.html`. Trust the notebook to enable JavaScript in its embedded frame, or open the exported HTML directly in a modern browser. The export works offline; no new packages, map service, or external assets are needed.
-
-Use **Play / Pause**, **Restart**, the year slider and the speed selector (0.5–4×). Switch between **No policy** and **Combined policy · intensity 1**. Both use 600 agents, 12 years, seed 201, medium interaction strength, and the notebook's existing calibrated parameters and policy function. The map shows accepted moves, social-chain moves, annual route totals, target-state inflow and end-year state population.
-
-One dot is one recorded accepted agent move, including each member of a moving household. Route totals are validated against the model's annual inflow/outflow and move rate. The model has annual time steps: within-year ordering, travel paths and timing are illustrative. End-year populations also include demographic replacement. The animation runs two additional model instances without changing the model or the preceding analysis.
-
-To export without opening Jupyter, run from the repository root:
-
-```sh
-python migration_animation.py --output migration_animation.html
+```powershell
+calibration/Reproduce-Calibration.ps1
 ```
 
-For a smaller demonstration, add `--agents 100 --years 3 --seed 201`. The loader executes the existing notebook definitions and reads the supplied CSV cache. Keep `migration_animation.py`, `migration_animation_template.html` and the notebook together. The generated HTML needs no supporting files.
+This refits IRS parameters, verifies/reuses compatible simulation checkpoints,
+freshly repeats cases, runs four public CLI examples and executes the diagnostic
+Notebook. Add `-Fresh` to back up checkpoints and actually recompute all
+calibration and precision-control simulations. Use `-Python path/to/python.exe`
+to select an existing interpreter. Full recomputation is substantially slower.
+The individual Python scripts also run on other OSes; see
+`calibration/WORKBENCH.md`. For one traced case:
 
-Run the animation tests with the existing requirements installed:
+```powershell
+.venv/Scripts/python.exe calibration/run_reliable_case.py --case calibration/reliable-calibration/examples/baseline.json --output results/example-result.json
+```
 
-```sh
-python -m unittest -v test_migration_animation
+The workbench has immutable fixtures under `calibration/download/` and
+`calibration/deployment/`. They pin the exact V8 inputs and recorded SHA256
+checks; they are fixtures, not alternative deployments. The root model
+definition ASTs have been compared with that snapshot. Reconstructed empirical
+inputs and the official URL/hash source manifest are in `calibration/raw-rebuild/`.
+The approximately 270MB PUMS downloads and virtual environment are not bundled.
+The fitted pipeline uses the supplied verified numerical inputs. Rebuilding
+them from microdata requires official downloads and the PUMS rebuild script.
+
+## Published analysis and historical results
+
+`0914-1_v8.ipynb` remains the **published profile**, stay beta=3.925, reading
+the 29 original tables in `abm_outputs_research_plan_v7/`. Run all cells in a
+Notebook editor from this directory. Its appended animation is that profile.
+A live historical-profile animation can also be generated with:
+
+```powershell
+.venv/Scripts/python.exe run_project.py --profile published
+```
+
+`abm_data/` preserves original copies; `PROVENANCE.csv` records historical
+recovery. The old three-row calibration's exact generation remains unresolved.
+A historical static competition rule was subsequently recovered, but its cached
+table contains state net migration only. The root Notebook now labels these
+limits and corrects download behavior, the sweep endpoint and dependency name.
+
+The CLI loader now extracts `EXTERNAL_ORIGIN_TARGET` from the Notebook, fixing
+the previous open-system `NameError`. Network/open final calibration scalars
+are rounded to four decimals after bisection, before simulation; iterations
+retain full precision. Under the published profile, all 752 affected rows and
+5,648 checked metrics match the original caches after this fix. Policy CSVs
+are unchanged.
+
+**The original 4140-row policy grid, inferential summaries and research figures
+have not been rerun with new parameters.** The new animation/video are live
+demonstrations only. Adopting the fit for policy conclusions requires rerunning
+associated experiments and updating the report. `results/published/` preserves
+the earlier video, separated from the new demonstration.
+
+## Checks
+
+```powershell
+.venv/Scripts/python.exe -m unittest -v test_migration_animation
+.venv/Scripts/python.exe calibration/verify_reliable_runner.py
+.venv/Scripts/python.exe calibration/execute_calibration_notebook.py
+```
+
+`results/assembly-verification.json` records source commits, unchanged model ASTs
+and the fitted parameter hash. Full protocols, seed lists, bootstrap results
+and rejected candidates accompany the report. Repeat cases match exactly in
+the pinned Windows environment; other numerical libraries require checking.
+
+The standalone published-profile animation (`migration_animation.py`,
+notebook section 14) was merged to `master` in #39 and is included here:
+
+```powershell
+.venv/Scripts/python.exe migration_animation.py --output migration_animation.html
 ```

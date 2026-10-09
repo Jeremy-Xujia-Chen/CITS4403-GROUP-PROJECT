@@ -1,0 +1,249 @@
+{
+  "target_baseline_move_rate": 0.04077777777777778,
+  "network": [
+    {
+      "decay": 2.0,
+      "beta_full_precision": 3.7189697265624995,
+      "beta_rounded_4": 3.719,
+      "cached_beta": 3.719,
+      "matches_rounded_parameter": true,
+      "steps": [
+        {
+          "beta": 2.7125,
+          "rate": 0.10855555555555556
+        },
+        {
+          "beta": 3.3187499999999996,
+          "rate": 0.059250000000000004
+        },
+        {
+          "beta": 3.6218749999999997,
+          "rate": 0.04247222222222222
+        },
+        {
+          "beta": 3.7734375,
+          "rate": 0.03691666666666667
+        },
+        {
+          "beta": 3.6976562499999996,
+          "rate": 0.04105555555555556
+        },
+        {
+          "beta": 3.735546875,
+          "rate": 0.03677777777777778
+        },
+        {
+          "beta": 3.7166015624999997,
+          "rate": 0.04083333333333334
+        },
+        {
+          "beta": 3.72607421875,
+          "rate": 0.03986111111111111
+        },
+        {
+          "beta": 3.7213378906249996,
+          "rate": 0.03858333333333334
+        }
+      ]
+    },
+    {
+      "decay": 5.0,
+      "beta_full_precision": 3.4158447265625,
+      "beta_rounded_4": 3.4158,
+      "cached_beta": 3.4158,
+      "matches_rounded_parameter": true,
+      "steps": [
+        {
+          "beta": 2.7125,
+          "rate": 0.08691666666666667
+        },
+        {
+          "beta": 3.3187499999999996,
+          "rate": 0.04572222222222222
+        },
+        {
+          "beta": 3.6218749999999997,
+          "rate": 0.033555555555555554
+        },
+        {
+          "beta": 3.4703124999999995,
+          "rate": 0.03863888888888889
+        },
+        {
+          "beta": 3.3945312499999996,
+          "rate": 0.040888888888888884
+        },
+        {
+          "beta": 3.4324218749999993,
+          "rate": 0.040583333333333325
+        },
+        {
+          "beta": 3.4134765624999996,
+          "rate": 0.04211111111111111
+        },
+        {
+          "beta": 3.4229492187499995,
+          "rate": 0.04022222222222222
+        },
+        {
+          "beta": 3.4182128906249996,
+          "rate": 0.03986111111111111
+        }
+      ]
+    },
+    {
+      "decay": 10.0,
+      "beta_full_precision": 3.1837646484375,
+      "beta_rounded_4": 3.1838,
+      "cached_beta": 3.1838,
+      "matches_rounded_parameter": true,
+      "steps": [
+        {
+          "beta": 2.7125,
+          "rate": 0.06930555555555555
+        },
+        {
+          "beta": 3.3187499999999996,
+          "rate": 0.034166666666666665
+        },
+        {
+          "beta": 3.015625,
+          "rate": 0.05
+        },
+        {
+          "beta": 3.1671875,
+          "rate": 0.04291666666666667
+        },
+        {
+          "beta": 3.2429687499999997,
+          "rate": 0.03933333333333334
+        },
+        {
+          "beta": 3.205078125,
+          "rate": 0.03902777777777778
+        },
+        {
+          "beta": 3.1861328125,
+          "rate": 0.04044444444444445
+        },
+        {
+          "beta": 3.1766601562499996,
+          "rate": 0.04141666666666667
+        },
+        {
+          "beta": 3.181396484375,
+          "rate": 0.040888888888888884
+        }
+      ]
+    }
+  ],
+  "open": [
+    {
+      "capacity_mode": "shared",
+      "external_rate_full_precision": 0.0983203125,
+      "external_rate_rounded_4": 0.0983,
+      "cached_rate": 0.0983,
+      "matches_rounded_parameter": true,
+      "steps": [
+        {
+          "external_rate": 0.14,
+          "external_share": 0.6514650483199522
+        },
+        {
+          "external_rate": 0.085,
+          "external_share": 0.607043822828764
+        },
+        {
+          "external_rate": 0.11250000000000002,
+          "external_share": 0.6416343641181443
+        },
+        {
+          "external_rate": 0.09875,
+          "external_share": 0.630472442529971
+        },
+        {
+          "external_rate": 0.09187500000000001,
+          "external_share": 0.5995925797910007
+        },
+        {
+          "external_rate": 0.09531250000000001,
+          "external_share": 0.6135507554640862
+        },
+        {
+          "external_rate": 0.09703125000000001,
+          "external_share": 0.6183744984352855
+        },
+        {
+          "external_rate": 0.09789062500000001,
+          "external_share": 0.6131876245097695
+        }
+      ]
+    },
+    {
+      "capacity_mode": "scaled",
+      "external_rate_full_precision": 0.06910156249999999,
+      "external_rate_rounded_4": 0.0691,
+      "cached_rate": 0.0691,
+      "matches_rounded_parameter": true,
+      "steps": [
+        {
+          "external_rate": 0.14,
+          "external_share": 0.7449714435827667
+        },
+        {
+          "external_rate": 0.085,
+          "external_share": 0.6723706521054034
+        },
+        {
+          "external_rate": 0.0575,
+          "external_share": 0.5894561291512251
+        },
+        {
+          "external_rate": 0.07125000000000001,
+          "external_share": 0.6310206384141188
+        },
+        {
+          "external_rate": 0.064375,
+          "external_share": 0.6099474135205333
+        },
+        {
+          "external_rate": 0.0678125,
+          "external_share": 0.6184396565100354
+        },
+        {
+          "external_rate": 0.06953125,
+          "external_share": 0.6207436585440858
+        },
+        {
+          "external_rate": 0.068671875,
+          "external_share": 0.6188588046782045
+        }
+      ]
+    }
+  ],
+  "legacy_move_rate_table": [
+    {
+      "beta_current_state": 3.875,
+      "current_model_600_agents_12_years_5_calibration_seeds": 0.04172222222222222,
+      "old_model_cached_rate": 0.03924,
+      "difference": 0.002482222222222226,
+      "matches": false
+    },
+    {
+      "beta_current_state": 3.9,
+      "current_model_600_agents_12_years_5_calibration_seeds": 0.04086111111111111,
+      "old_model_cached_rate": 0.038472,
+      "difference": 0.0023891111111111127,
+      "matches": false
+    },
+    {
+      "beta_current_state": 3.925,
+      "current_model_600_agents_12_years_5_calibration_seeds": 0.04077777777777778,
+      "old_model_cached_rate": 0.038612,
+      "difference": 0.0021657777777777804,
+      "matches": false
+    }
+  ],
+  "live_calibration_cases": 230,
+  "method": "Exact cell 67 nine-step and cell 69 eight-step bisection, with five CALIBRATION_SEEDS. Full precision and cache-rounded settings both recorded; model definitions unchanged."
+}
