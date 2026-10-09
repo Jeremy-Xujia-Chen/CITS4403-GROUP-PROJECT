@@ -1,0 +1,16 @@
+{
+  "passed": true,
+  "reason": "Replace global unfilled_jobs with unfilled_jobs_state in competition output. All other worker paths unchanged.",
+  "competition_seeds_rerun": [
+    401,
+    402,
+    403,
+    404,
+    405,
+    406
+  ],
+  "net_migration_and_employment_exact_match": true,
+  "normal_records_sha256": "4434306fd39a921506409ff68fc6da4a626fcec02c23afed7dfb3f69a93a0ee3",
+  "old_fingerprint": "fe4c38a6606a68a2f242f07121f8f5ab4a7f87cba890f66f7f81addc9d5f599f",
+  "corrected_fingerprint": "f887896dcf70ac5ac4077e4bbe71661fee5abb8502d3b4ffeb1a34c9cd53591a"
+}

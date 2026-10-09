@@ -1,0 +1,65 @@
+{
+  "live_cache_results": [
+    {
+      "case": "cross: baseline, medium, seed 201",
+      "metrics_checked": 5,
+      "target_inflow_rate": 0.004583333333333333,
+      "status": "match"
+    },
+    {
+      "case": "cross: combined, medium, seed 201",
+      "metrics_checked": 5,
+      "target_inflow_rate": 0.022222222222222223,
+      "status": "match"
+    },
+    {
+      "case": "sweep: NY housing 3, strong, seed 301",
+      "metrics_checked": 6,
+      "target_inflow_rate": 0.014583333333333334,
+      "status": "match"
+    },
+    {
+      "case": "sweep: CA combined 2, weak, seed 301",
+      "metrics_checked": 6,
+      "target_inflow_rate": 0.06597222222222222,
+      "status": "match"
+    }
+  ],
+  "parameters": {
+    "beta_income": 1.02462368780407,
+    "beta_jobs": 1.2443365664578463,
+    "beta_rent": 0.7019478398382083,
+    "beta_distance": 0.31172356380842564,
+    "beta_education": 0.4615128156204839,
+    "beta_childcare": 0.5210011996526396,
+    "beta_current_state": 3.925,
+    "beta_home_state": 0.2,
+    "migration_cost": 1.0,
+    "temperature": 0.9,
+    "beta_unemployment_push": 0.45,
+    "beta_job_rejection_push": 0.75,
+    "beta_peer_network": 1.0,
+    "beta_coorigin": 0.6,
+    "beta_social_dissatisfaction": 0.9,
+    "social_satisfaction_threshold": 0.35,
+    "beta_crowding": 0.0,
+    "network_k": 8,
+    "annual_pair_formation_rate": 0.08,
+    "beta_migration_incentive": 0.55,
+    "beta_housing_signal": 0.3,
+    "beta_employment_signal": 0.4,
+    "housing_entry_factor": 0.8,
+    "housing_policy_slots": 0.05,
+    "employment_policy_slots": 0.07,
+    "housing_policy_effect": 0.03,
+    "employment_policy_growth": 0.02,
+    "rent_rejection_elasticity": 0.15,
+    "housing_market_softness": 0.1,
+    "housing_capacity_buffer": 0.05,
+    "international_entry_rate": 0.008,
+    "birth_peak_probability": 0.065,
+    "birth_age_center": 29.0,
+    "birth_age_spread": 5.0,
+    "max_dependent_children": 3
+  }
+}

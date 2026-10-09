@@ -1,0 +1,7 @@
+model,inflow,response90_median,gain_at_6
+closed,inflow,3.5,0.10135416666666669
+closed,total_inflow,3.5,0.10135416666666669
+scaled,inflow,3.5,0.09069444444444445
+scaled,total_inflow,3.5,0.14927083333333335
+shared,inflow,3.5,0.09779513888888887
+shared,total_inflow,5.0,0.14180555555555555

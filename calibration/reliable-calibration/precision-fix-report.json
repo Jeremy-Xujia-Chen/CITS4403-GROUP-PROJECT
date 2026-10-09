@@ -1,0 +1,22 @@
+{
+  "published_setting_rows": 752,
+  "unique_simulations": 704,
+  "numeric_metrics_checked": 5648,
+  "mismatch_count": 0,
+  "mismatches": [],
+  "passed": true,
+  "rounding_rule": "Final beta and external rate rounded to four decimals after bisection, before any policy simulation; fitting iterations remain full precision.",
+  "patched_notebook": "D:\\uni\\cits4403\\project\\pr1\\reliable-project-pr\\calibration\\reliable-calibration\\precision-fix-project\\0914-1_v8.ipynb",
+  "patched_source_sha256": "f22688417d90f1a818470c5a63218f2030e20d7ab27caaeff0d9c33135923e72",
+  "network_final_betas": {
+    "2.0": 3.719,
+    "5.0": 3.4158,
+    "10.0": 3.1838
+  },
+  "open_final_rates": {
+    "shared": 0.0983,
+    "scaled": 0.0691
+  },
+  "seconds": 0.5779999999795109,
+  "scope": "Exact affected published case grid, original IRS fit and beta=3.925; outputs obtained from actual fresh model runs. These are precision-control results, not new-fit policy results."
+}

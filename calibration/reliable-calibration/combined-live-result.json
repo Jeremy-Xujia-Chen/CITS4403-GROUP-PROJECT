@@ -1,0 +1,32 @@
+{
+  "case": {
+    "seed": 201,
+    "n_agents": 600,
+    "years": 12,
+    "policy": "combined",
+    "intensity": 1.0,
+    "interaction": "medium",
+    "profile": "new",
+    "beta_current_state": 3.82
+  },
+  "parameters_sha256": "444d6a3dc93cedc8740e3c196691831b96bc91014d7e74888f9704b8d90ecf78",
+  "metrics": {
+    "target_inflow_rate": 0.019583333333333335,
+    "target_social_cost": -0.14458060450910304,
+    "chain_share": 0.3829787234042553,
+    "housing_rejection": 0.07482993197278912,
+    "job_rejection": 0.13472010186010458,
+    "coorigin_clustering": 0.2003161607909272,
+    "move_rate": 0.04513888888888889,
+    "peer_colocation": 0.21958333333333332,
+    "social_utility_index": 0.36604024686318565,
+    "peer_colocation_mean": 0.2018923611111111,
+    "social_utility_index_mean": 0.36100281617859503,
+    "housing_rejection_system": 0.0483368420990084,
+    "unfilled_jobs": 3.75,
+    "population_hhi": 0.20374444444444442,
+    "mover_origin_attachment": 0.10642351653522238,
+    "final_rent": 0.8382769550237551,
+    "same_state_contact_share": 0.21958333333333332
+  }
+}

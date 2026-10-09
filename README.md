@@ -1,78 +1,50 @@
-# 0914-1_v8 run package
+# Young-adult interstate migration: fitted V8
 
-## How to run
+An eight-state agent-based research model of migration, social ties, policy incentives, housing capacity and employment. The current research report, all 4,140 experiment rows, derived tables and figures use the new IRS fit and independently validated, design-specific stay parameters. The six static state-competition runs also use the fitted profile.
 
-1. Install Python 3.10 and the dependencies:
+## Run locally
 
-   ```
-   pip install -r requirements.txt jupyter
-   ```
+Use Python 3.10.18 and the pinned dependencies:
 
-2. Open `0914-1_v8.ipynb` from inside this folder and choose **Run All**. A full run takes about 30 seconds.
-
-The notebook reads its data from `abm_outputs_research_plan_v7/`. Keep that folder name and keep it next to the notebook. The path is hard-coded in cell 14:
-
-```python
-RESULT_CACHE = Path("abm_outputs_research_plan_v7")
+```powershell
+python -m venv .venv
+.venv/Scripts/python.exe -m pip install -r requirements-project.txt
+.venv/Scripts/python.exe tools/run_tests.py
+.venv/Scripts/python.exe tools/verify_project.py
+.venv/Scripts/python.exe run_project.py --profile calibrated --skip-notebook --video
 ```
 
-The last cell re-runs four model cases live and checks them against the cached results. The tolerance is 1e-9.
+Open `results/calibrated/migration-animation.html` for the self-contained animation and `results/calibrated/migration-comparison.mp4` for the decoded video. Replay dots represent accepted model moves; within-year timing and travel paths are illustrative.
 
-## Contents
+The complete executed research report is `results/research/research-executed.html`; its editable source is `0914-1_v8.ipynb`. Open `results/index.html` for links to the main evidence.
 
-| Path | Description |
-|---|---|
-| `0914-1_v8.ipynb` | The original notebook with the changes listed under "Changes in this package" |
-| `abm_outputs_research_plan_v7/` | All 29 CSV files the notebook needs |
-| `abm_data/` | The 4 CSV files that survived in the original cache. They are identical copies of files already in `abm_outputs_research_plan_v7/`, and the notebook does not use this folder |
-| `PROVENANCE.csv` | Source, run settings and verification result for every CSV |
-| `rebuild_scripts/` | Scripts used to rebuild the CSVs. They call the model code inside the v8 notebook directly |
-| `rebuild_scripts/audit/` | `resim.py` re-simulates every cached file that has no generator in the notebook and runs the V5 calibration routine with the current model (about 3 minutes on 8 cores); `compare.py` compares the results with the cache |
-| `0914-1_v8.before_precision_fix.ipynb.bak` | The notebook before the changes below |
-| `requirements.txt` | Package versions from the original author's environment |
+## Reproduce research results
 
-## Where the data come from
+```powershell
+.venv/Scripts/python.exe research/build_research.py --jobs 8
+.venv/Scripts/python.exe research/summaries.py
+.venv/Scripts/python.exe research/render_notebook.py
+```
 
-The original cache folder held only 4 of the 29 CSV files; the other 25 were lost. They were restored as follows. `PROVENANCE.csv` gives the details for each file.
+The shipped checkpoint contains actual newly simulated cases and input fingerprints. To force a complete simulator rerun, move `research/live-simulations.jsonl` to a backup, then run the commands above. This computes 3,838 unique model cases, represented by 4,140 experiment rows plus six competition runs. Shared cases are deduplicated; no historical simulation cache supplies the new metrics.
 
-- **Real data (4 files).** The ACS files were recomputed from the 2023 ACS 1-year PUMS microdata. They match the outputs saved in v8 exactly.
-- **Re-simulated (18 files).** These were re-run with the model code in the v8 notebook. The original agent counts, horizons and random seeds were recovered by matching the saved outputs, and every printed digit matches.
-- **Rebuilt from v8's printed output (3 files).** These are entered from the values the notebook printed, not simulated:
-  - `move_rate_calibration.csv` was produced by an earlier model build and cannot be reproduced with v8 code.
-  - The two BRFSS tables.
-- **Original files (4 files).** These are unchanged: the intensity sweeps, network decay and open system results.
+Parameter and source hashes are in `calibration/reliable-calibration/parameters.json`. The baseline design (1,000 agents, 20 years) uses beta 3.8250. Policy designs (600 agents, 12 years) and shock/entrant designs (600 agents, 15 years) use separately validated beta 3.8200. Decay 2 and 5 have validated conditional recalibrations; the failed decay-10 candidate is a labelled diagnostic, excluded from validated defaults. Open entry-attempt rates are 0.0940 (shared capacity) and 0.0678 (scaled capacity), with exact PUMS composition target 0.6202649263910248.
 
-## Differences from the saved notebook output
+## Reproduce parameter fitting
 
-Apart from the items listed under "Audit result" below, all numbers match the outputs saved in the original notebook. Only these display details differ:
+```powershell
+powershell -File calibration/Reproduce-Calibration.ps1 -Fresh -Python .venv/Scripts/python.exe
+.venv/Scripts/python.exe research/calibrate_15y.py
+```
 
-- **Cell 32 (power table).** It shows extra NaN rows, and seed counts appear as `53.0` instead of `53`. This is because the notebook reads `paired_policy_effects.csv` both as a summary table and as per-seed data, so the file has to hold both blocks.
-- **Wide tables.** Some wrap at different column positions.
-- **Last cell.** It reports a different file count and different modification times.
+`-Fresh` backs up simulator checkpoints before rerunning. Research 15-year checkpoints can likewise be backed up to force recomputation. Calibration rejects mismatched source fingerprints. See `calibration/reliable-calibration/calibration-report.md` for methods, training/validation seeds, conditional bootstrap uncertainty and retained failures, and `calibration/raw-rebuild/source-manifest.json` for official source URLs and hashes.
 
-## Changes in this package
+Large original PUMS downloads and virtual environments are excluded from the project. The verified numeric input reconstructions and source manifest are included. A fresh remote raw-data extraction requires downloading the cited original sources; packaged simulation reconstruction does not require network access.
 
-- **Cell 24 (calibration).** The V5 bisection routine for `beta_current_state` is restored. It regenerates `move_rate_calibration.csv` when the file is missing. The cell also re-runs the routine at the adopted value with the current model and prints the result.
-- **E6 (cell 56).** This cell uses the need-score incentive rule from V5 cell 33, unchanged.
-- **Cells 67 and 69 (network decay, open system).** Calibrated values are rounded to 4 decimals (`PARAM_DECIMALS`), the same precision the cache stores. Before this change, deleting the cache and re-running changed 47 of the 752 rows.
-- **Cell 37 (`thresholds_by_seed`).** Slopes are rounded before `argmax`, so an exact tie always goes to the lower interval. Before this change, a 1e-16 difference between the cached CSV digits and a fresh run decided the tie.
+## Interpretation
 
-## Audit result (2026-10-09)
+IRS coefficients fit aggregate route shares, not causal individual preferences. Stay and entry-attempt rates are simulator calibration controls. Social, policy and demographic coefficients are declared structural/scenario assumptions. Simulation seed intervals exclude survey sampling and structural uncertainty. The social utility index is an internal diagnostic; no complete common-year eight-state BRFSS welfare validation is claimed. Tulsa cash payments provide an external scale reference only.
 
-- **All cached results match the current model.** Every per-seed file and E6 was re-simulated with the current v8 code and matches the cache to within 4e-15. The summary files equal the summaries computed from their run files.
-- **Regenerating from scratch gives the same data.** The sweep, network decay, open system and E6 CSVs were deleted and regenerated by running the notebook. All values match the cache exactly. The notebook shows identical output whether it runs on the original or the regenerated files.
-- **The calibration does not hold for the current model.** The V5 routine uses only 5 seeds × 500 agents × 6 years, so its estimates are dominated by noise (standard error about 0.002), and the move rate also depends on the number of agents. A larger check used 9 β values from 3.80 to 4.00, 20 seeds at each, with the same seeds at every β (`rebuild_scripts/audit/calib_grid.py`):
+Historical data are retained under `calibration/deployment/master` solely as provenance and precision-control fixtures. The old three-row stay-calibration table has incomplete generation history; it is not the source of the new default parameters. The historical 752-row network/open precision control matches after final four-decimal rounding.
 
-  | Scale | Move rate at β = 3.925 (SE) | β that hits the 0.03875 target (95% CI) |
-  |---|---|---|
-  | 600 agents × 12 years (experiment scale) | 0.04054 (0.00054) | 3.974 (3.955–3.993) |
-  | 1000 agents × 6 years | 0.04122 (0.00058) | 3.976 (3.960–3.994) |
-
-  At experiment scale, 3.925 gives a move rate about 4.6% above the target, a gap of more than 3 standard errors, and 3.925 lies outside the confidence interval. All results still use 3.925. Adopting about 3.975 would require re-running every experiment.
-
-  **Decision (2026-10-09): keep 3.925.** Report that at this value the model move rate is about 5% above the ACS target.
-- **Remaining differences from the original saved output:**
-  - Cell 24 has one added line, the live calibration check.
-  - Two steepest-slope intervals now use the deterministic tie rule (NY, medium ties): combined 1.75–2.25 → 1.50–2.00, and employment 1.50 → 1.25.
-  - Cell 32 display (see above).
-  - Cached `network_decay_runs.csv` has a `peer_colocation` column and `open_system_runs.csv` has `move_rate` and `target_external_inflow_rate`. The notebook generators do not write these columns, and the notebook does not read them.
+See [repository map](docs/REPOSITORY.md). PR #47 contains no PPT/PPTX file, so no presentation change is asserted.

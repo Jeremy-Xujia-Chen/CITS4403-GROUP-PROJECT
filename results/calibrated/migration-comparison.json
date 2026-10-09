@@ -1,0 +1,23 @@
+{
+  "passed": true,
+  "output": "D:\\uni\\cits4403\\project\\pr1\\project-finalization\\results\\calibrated\\migration-comparison.mp4",
+  "frames": 720,
+  "fps": 24.0,
+  "duration_seconds": 30.0,
+  "size": [
+    1280,
+    720
+  ],
+  "codec": "h264",
+  "bytes": 4346781,
+  "sha256": "91c0b68b43ee7648a549a550b28a4e9aaa9c5731369a3241db61c9c0a9c552cc",
+  "seconds_to_render_and_verify": 18.687999999994645,
+  "seed": 201,
+  "accepted_moves": {
+    "New fit \u00b7 No policy": 266,
+    "New fit \u00b7 Combined policy \u00b7 intensity 1": 325
+  },
+  "all_frames_decoded": true,
+  "adjacent_frames_differ": true,
+  "audio": false
+}

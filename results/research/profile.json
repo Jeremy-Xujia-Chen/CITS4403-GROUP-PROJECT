@@ -1,0 +1,6 @@
+{
+  "profile": "calibrated-research",
+  "parameters_sha256": "4e52694a6e126a94b58c94e15b6e72b4780273b7a39918666798edc2432157a4",
+  "live_checks": 4,
+  "live_metric_checks": 22
+}

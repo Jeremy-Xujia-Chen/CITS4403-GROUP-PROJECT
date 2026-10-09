@@ -1,0 +1,13 @@
+,policy,metric,strong_minus_weak_policy_effect,ci95_half_width
+0,housing,d_target_inflow_rate,0.0019270833333332,0.0020551454678899
+1,housing,d_target_social_cost,-0.0177395543750797,0.032432553684898
+2,housing,d_target_chain_share,0.0723560986191068,0.0599431683874885
+3,housing,d_coorigin_clustering,-0.004507705769946,0.0071115685682988
+4,employment,d_target_inflow_rate,0.0011805555555555,0.0022795892597303
+5,employment,d_target_social_cost,0.0115714504557546,0.0375584565832077
+6,employment,d_target_chain_share,0.0446262694538494,0.0531527879241153
+7,employment,d_coorigin_clustering,-0.0023715724851918,0.005871774975089
+8,combined,d_target_inflow_rate,0.0039756944444444,0.0024980421198995
+9,combined,d_target_social_cost,-0.0050764665534395,0.0302162969636934
+10,combined,d_target_chain_share,0.0823884035902539,0.10219829648898
+11,combined,d_coorigin_clustering,0.012182438760652,0.009878202511606
