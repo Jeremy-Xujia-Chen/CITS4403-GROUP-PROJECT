@@ -1,0 +1,24 @@
+test_comparisons_require_same_annual_horizon (test_migration_animation.EventValidationTests) ... ok
+test_complete_events_and_zero_move_year (test_migration_animation.EventValidationTests) ... ok
+test_disabled_event_recording_is_not_zero_migration (test_migration_animation.EventValidationTests) ... ok
+test_html_export_escapes_untrusted_labels (test_migration_animation.EventValidationTests) ... ok
+test_reject_bad_routes_and_flow_totals (test_migration_animation.EventValidationTests) ... ok
+test_reject_incomplete_state_year_and_population (test_migration_animation.EventValidationTests) ... ok
+D:\uni\cits4403\project\pr1\full-project-audit\.venv\lib\site-packages\matplotlib\_fontconfig_pattern.py:64: PyparsingDeprecationWarning: 'oneOf' deprecated - use 'one_of'
+  prop = Group((name + Suppress("=") + comma_separated(value)) | oneOf(_CONSTANTS))
+D:\uni\cits4403\project\pr1\full-project-audit\.venv\lib\site-packages\matplotlib\_fontconfig_pattern.py:85: PyparsingDeprecationWarning: 'parseString' deprecated - use 'parse_string'
+  parse = parser.parseString(pattern)
+D:\uni\cits4403\project\pr1\full-project-audit\.venv\lib\site-packages\matplotlib\_fontconfig_pattern.py:89: PyparsingDeprecationWarning: 'resetCache' deprecated - use 'reset_cache'
+  parser.resetCache()
+D:\uni\cits4403\project\pr1\full-project-audit\.venv\lib\site-packages\matplotlib\_mathtext.py:45: PyparsingDeprecationWarning: 'enablePackrat' deprecated - use 'enable_packrat'
+  ParserElement.enablePackrat()
+In D:\uni\cits4403\project\pr1\full-project-audit\.venv\lib\site-packages\matplotlib\mpl-data\stylelib\classic.mplstyle: 'parseString' deprecated - use 'parse_string'
+In D:\uni\cits4403\project\pr1\full-project-audit\.venv\lib\site-packages\matplotlib\mpl-data\stylelib\classic.mplstyle: 'resetCache' deprecated - use 'reset_cache'
+test_deterministic_replay_preserves_model_inputs (test_migration_animation.ModelIntegrationTests) ... ok
+test_reject_invalid_run_settings (test_migration_animation.ModelIntegrationTests) ... ok
+test_replay_matches_direct_original_model (test_migration_animation.ModelIntegrationTests) ... ok
+
+----------------------------------------------------------------------
+Ran 9 tests in 2.647s
+
+OK

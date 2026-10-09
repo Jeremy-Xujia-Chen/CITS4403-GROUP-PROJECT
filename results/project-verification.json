@@ -1,0 +1,15 @@
+{
+  "passed": true,
+  "animation_tests": 9,
+  "published_notebook_code_cells": 40,
+  "published_notebook_error_outputs": 0,
+  "published_cache_csvs_byte_identical": 29,
+  "model_definition_asts_unchanged": true,
+  "calibrated_diagnostic_notebook_code_cells": 5,
+  "calibrated_input_hashes_verified": true,
+  "calibrated_animation_event_totals_checked": true,
+  "calibrated_video_frames_decoded": 720,
+  "calibrated_video_seconds": 30.0,
+  "new_policy_grid_regenerated": false,
+  "unvalidated_decay_10_default_excluded": true
+}

@@ -2,3 +2,12 @@ CLAUDE.md
 .DS_Store
 __pycache__/
 .ipynb_checkpoints/
+
+.venv/
+*.bak
+calibration/ipython/
+calibration/jupyter/
+calibration/jupyter-runtime/
+calibration/reliable-calibration/precision-fix-project/
+calibration/results/reliable-calibration.zip
+.runtime/
