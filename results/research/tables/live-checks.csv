@@ -1,0 +1,5 @@
+case,metrics_checked,target_inflow_rate,status
+"cross: baseline, medium, seed 201",5,0.005138888888888889,match
+"cross: combined, medium, seed 201",5,0.019583333333333335,match
+"sweep: NY housing 3, strong, seed 301",6,0.014722222222222222,match
+"sweep: CA combined 2, weak, seed 301",6,0.06625,match

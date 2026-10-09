@@ -1,0 +1,14 @@
+{
+  "profile": "calibrated",
+  "parameters_sha256": "4e52694a6e126a94b58c94e15b6e72b4780273b7a39918666798edc2432157a4",
+  "beta_current_state": 3.82,
+  "agents": 600,
+  "years": 12,
+  "seed": 201,
+  "scope": "Live demonstration; research-wide policy results are separately stored in data/research.",
+  "accepted_moves": {
+    "New fit \u00b7 No policy": 266,
+    "New fit \u00b7 Combined policy \u00b7 intensity 1": 325
+  },
+  "event_totals_validated": true
+}

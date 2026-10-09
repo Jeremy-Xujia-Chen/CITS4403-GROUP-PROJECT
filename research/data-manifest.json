@@ -1,0 +1,118 @@
+{
+  "acs_young_adult_interstate_move_rate.csv": {
+    "rows": 1,
+    "sha256": "17cae6bb4a441298dae9ee9f24f109abe8ad3a85637342bcd2f6e4fdc09afe5a"
+  },
+  "acs_young_adult_interstate_move_rate_by_age.csv": {
+    "rows": 18,
+    "sha256": "22addc74ae6655aa2f020134fc070264bb4b73ab39354bf254c5861188c67db0"
+  },
+  "acs_young_adult_interstate_move_rate_by_state.csv": {
+    "rows": 8,
+    "sha256": "bc03e506298499f07e9c4d9568ed30dfb0cef5f05c91d96ccc3b4ef7dc42ae70"
+  },
+  "baseline_runs.csv": {
+    "rows": 8,
+    "sha256": "ab2cb6a92afb745693993eee962e0560fb6564abaef5cdf61508f19d47c80ba9"
+  },
+  "brfss_2023_coverage_audit.csv": {
+    "rows": 8,
+    "sha256": "1f5e011361380fad4751caaad29ab332d9364447fb526ae1f55289cfb36faf1e"
+  },
+  "brfss_validation_status.csv": {
+    "rows": 1,
+    "sha256": "17c0a23038adff2f5bb792dfc4167b031e6831c6e79b6d4eac49cde8b18e3006"
+  },
+  "cross_experiment_runs.csv": {
+    "rows": 96,
+    "sha256": "0868fe342a2bccf3cf88fd04218a4b89d8e9a3ad646af0ec13676add953337dc"
+  },
+  "cross_experiment_summary.csv": {
+    "rows": 12,
+    "sha256": "278e7b0e2143c4d83feb30f524e58f3e84f349bdd7949cf48471b4636a544306"
+  },
+  "entrant_robustness_runs.csv": {
+    "rows": 16,
+    "sha256": "db2070798d7aec52a3ce0c775f0ad8387a0c0bf44fdfba70c72a3d497f1e9bb3"
+  },
+  "interaction_modification.csv": {
+    "rows": 12,
+    "sha256": "212f3b614e0aa829391a453d29d77276c5e7cbcdd895cfd46fbe2a3fc8d4ce2e"
+  },
+  "lever_intensity_sweep_runs.csv": {
+    "rows": 1056,
+    "sha256": "1a27eacba9c82765212dc10fc94d6bce5d374ce63396aa08e42226455768713c"
+  },
+  "move_rate_calibration.csv": {
+    "rows": 3,
+    "sha256": "1c788d2adf6ab7442975b51c7e45bf459bc8505a614d968420eb3c30548834d5"
+  },
+  "network_decay_runs.csv": {
+    "rows": 384,
+    "sha256": "d4b6998c1fb954ee8d2d64fb61056cdd80c1581ceef63ec9d46282efd5af58e2"
+  },
+  "network_homophily_runs.csv": {
+    "rows": 16,
+    "sha256": "83d5533b55c1f9d60c6c517c8fae6387d71bdedf8e2b1aba04a78dd850a701df"
+  },
+  "network_homophily_summary.csv": {
+    "rows": 4,
+    "sha256": "d85d8ee065081d6deb982a88ca50f646141ec859b8b9514c648bec9255303506"
+  },
+  "open_system_runs.csv": {
+    "rows": 368,
+    "sha256": "20bb27161631eb8eef4256dba69ecc5db43c8575e619448d4615c93e0c239543"
+  },
+  "paired_policy_effects.csv": {
+    "rows": 84,
+    "sha256": "4d8f94ca01def312968773f7033ab65c2af30e0f9a94b8113d055ddd1c34b106"
+  },
+  "parameter_sensitivity_runs.csv": {
+    "rows": 12,
+    "sha256": "8eb248e7c37f49a02e4d41dfbf7b95d707722431dd48f1ca0916d58bc82fc5a0"
+  },
+  "pums_external_origin_competition.csv": {
+    "rows": 8,
+    "sha256": "6da8e9f0f43b0e7de6e7847af2840183d6f53cac97983d9e6df745fb192d62b3"
+  },
+  "rent_feedback_sensitivity_runs.csv": {
+    "rows": 16,
+    "sha256": "b28db3e29db4ac66bf6f71a1dd7e0d277e986270f215546733c45e6061f76e33"
+  },
+  "rent_feedback_sensitivity_summary.csv": {
+    "rows": 4,
+    "sha256": "98790ba71adeeca381885b17cf13381d5f8ee53db8bab68f89b0b0c7fa9e1abe"
+  },
+  "shock_runs.csv": {
+    "rows": 24,
+    "sha256": "9add8fe93a2a6c8b06714b1565e50f851ca23d4d6791559ca5c18b95c467ab86"
+  },
+  "shock_summary.csv": {
+    "rows": 4,
+    "sha256": "0e84ef90060a1c341abfb54041edfabbd73a500cf7f0e8fbd8977c1b6a8bc318"
+  },
+  "social_threshold_sensitivity_runs.csv": {
+    "rows": 24,
+    "sha256": "e46d921c860a894c6ad7e804f385759b6b16e5527963244216b0c4093ce2e5a4"
+  },
+  "social_threshold_sensitivity_summary.csv": {
+    "rows": 6,
+    "sha256": "eee58528f1d16269907838e50f06c33d96814f69ce68e96e3588ec0c48cdd67b"
+  },
+  "state_competition_summary.csv": {
+    "rows": 8,
+    "sha256": "f50380f0fd56ffe5d0bb7e69b9363b03eb96236d002243351f01c48d5e0a903b"
+  },
+  "state_intensity_sweep_runs.csv": {
+    "rows": 2112,
+    "sha256": "b81ffd60e7535a40e499a7defe38821fb769ba2a1e97d0ccaa91461a625260c6"
+  },
+  "tulsa_reference_runs.csv": {
+    "rows": 8,
+    "sha256": "bf526b808aa21c9381392fb38ccd4617f247dd3c3262ffc1e62ef43b8aa96778"
+  },
+  "tulsa_reference_summary.csv": {
+    "rows": 1,
+    "sha256": "a4a5cdf3b1239aa6002a984c10a2741a10fdc8e9a804fbb8e5ebd05d4a5ffe16"
+  }
+}

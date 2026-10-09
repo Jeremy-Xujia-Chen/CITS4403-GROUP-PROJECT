@@ -1,0 +1,34 @@
+{
+  "chosen_beta": 3.82,
+  "target": 0.0387457656898644,
+  "agents": 600,
+  "years": 15,
+  "training": {
+    "phase": "refined",
+    "beta_current_state": 3.82,
+    "n_seeds": 32,
+    "mean": 0.038795138888888886,
+    "ci95_low": 0.03798513178692607,
+    "ci95_high": 0.0396051459908517,
+    "ci95_halfwidth": 0.0008100071019628172,
+    "seed_sd": 0.002246659429950518,
+    "absolute_error": 4.9373199024482783e-05
+  },
+  "validation_new": {
+    "n_seeds": 32,
+    "mean": 0.038697916666666665,
+    "ci95_low": 0.0379401380702931,
+    "ci95_high": 0.03945569526304023,
+    "ci95_halfwidth": 0.0007577785963735592,
+    "seed_sd": 0.002101796916634288,
+    "absolute_bias": 4.784902319773798e-05
+  },
+  "training_criterion_passed": true,
+  "validation_criteria_passed": true,
+  "beta_seed_bootstrap_p025": 3.78,
+  "beta_seed_bootstrap_p975": 3.83,
+  "deterministic_repeat_max_difference": 0.0,
+  "unique_simulations": 960,
+  "seconds": 644.4059999999881,
+  "scope": "Conditional baseline calibration at 600x15; shock/policy/entrant alternatives remain scenario experiments, not additional empirical fits."
+}

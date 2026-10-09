@@ -1,0 +1,177 @@
+<!doctype html><html lang="en"><meta charset="utf-8"><title>Fitted V8 calibration evidence</title><style>body{max-width:1100px;margin:32px auto;padding:0 24px;font:16px/1.65 system-ui;color:#163340}table{border-collapse:collapse;width:100%;font-size:14px}td,th{border:1px solid #bfd0d7;padding:8px;text-align:left}th{background:#edf5f6}img{max-width:100%}a{color:#006b75}</style><body><h1>Fitted V8 parameters and reproducibility evidence</h1>
+<p>The IRS route coefficients are fitted from aggregate data. Stay and entry-attempt parameters match empirical targets inside the specified simulator. Policy, social and demographic settings remain declared scenario assumptions; these are conditional model estimates, not causal policy estimates or uniquely identified individual preferences.</p>
+<p>All default research tables and figures now use the fitted profile. Historical caches exist only under calibration/deployment/master for control/provenance. The research rebuild includes 4,140 seed-level rows and six competition runs.</p>
+<h2>Inputs and route fitting</h2>
+<p>The reconstructed inputs contain 88 state values and 50 IRS routes. IRS flows are tax-return counts, not specifically ages 18–35. The ACS anchor uses weighted PUMS observations at exactly ages 18–35. The PUMS external-origin composition retains Puerto Rico origins, whereas the overall move-rate anchor excludes them; see the source manifest for definitions and official URLs.</p>
+<p>The regularized weighted route-share objective uses the original four-group mixture and parameter bounds. Analytic-gradient implementation differs from the original objective by at most 1.04e-17; its gradient check differs by at most 1.5e-12.</p>
+<p>Leave-one-training-origin-out CV compares penalty scales 0.25, 1 and 4. The one-standard-error rule selects 0.25; coefficient penalty lambda=0.005, destination penalty lambda=0.0125. The six training origins are CA, TX, NY, FL, MA and NC. IL/WA were historically inspected, so their holdout is diagnostic, not new external validation.</p>
+<p>Historical holdout RMSE is 0.099536 versus 0.115586 for a fresh default-penalty fit. Final theta is fitted on all eight origins after the selection rule. Same-start optimizer repeat maximum parameter difference: 0.0.</p>
+<h2>Utility coefficients</h2>
+<table>
+<thead>
+<tr>
+  <th>Parameter</th>
+  <th style="text-align:right">Fitted value</th>
+  <th style="text-align:right">Conditional bootstrap 2.5%</th>
+  <th style="text-align:right">97.5%</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <td>beta_income</td>
+  <td style="text-align:right">1.077564579</td>
+  <td style="text-align:right">0.830367</td>
+  <td style="text-align:right">1.28723</td>
+</tr>
+<tr>
+  <td>beta_jobs</td>
+  <td style="text-align:right">1.225962283</td>
+  <td style="text-align:right">1.21581</td>
+  <td style="text-align:right">1.24454</td>
+</tr>
+<tr>
+  <td>beta_rent</td>
+  <td style="text-align:right">0.2510831381</td>
+  <td style="text-align:right">0</td>
+  <td style="text-align:right">0.702444</td>
+</tr>
+<tr>
+  <td>beta_distance</td>
+  <td style="text-align:right">0.5990354282</td>
+  <td style="text-align:right">0.222478</td>
+  <td style="text-align:right">0.745299</td>
+</tr>
+<tr>
+  <td>beta_education</td>
+  <td style="text-align:right">0.5022125559</td>
+  <td style="text-align:right">0.439331</td>
+  <td style="text-align:right">0.546431</td>
+</tr>
+<tr>
+  <td>beta_childcare</td>
+  <td style="text-align:right">0.5271625085</td>
+  <td style="text-align:right">0.500584</td>
+  <td style="text-align:right">0.548231</td>
+</tr>
+</tbody>
+</table>
+<p>The 200 bootstrap samples resample complete origin groups, with only eight origins and fixed priors, bounds and regularization. Rent and distance are weakly constrained. Narrow intervals can partly reflect priors and bounds; they do not identify exact real-world coefficients.</p>
+<p>Destination effects use CA as the zero reference. The full-precision vector and all fixed assumptions are in parameters.json.</p>
+<h2>Design-specific stay calibration</h2>
+<p>ACS move-rate target: 3.87457657%. Selection uses training seeds only; independent validation seeds do not select beta. Training absolute-error tolerance is 0.05 percentage points. Validation tolerance is 0.10 percentage points and the 95% simulation mean interval must contain the target. These are prespecified numerical acceptance rules, not universal scientific reliability thresholds.</p>
+<table>
+<thead>
+<tr>
+  <th>Design</th>
+  <th style="text-align:right">Beta</th>
+  <th>Training seeds</th>
+  <th>Validation seeds</th>
+  <th style="text-align:right">Validation mean</th>
+  <th>95% simulation interval</th>
+  <th>Passed</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <td>1000x20</td>
+  <td style="text-align:right">3.8250</td>
+  <td>901-916</td>
+  <td>1901-1932</td>
+  <td style="text-align:right">3.870938%</td>
+  <td>3.813597%–3.928278%</td>
+  <td>True</td>
+</tr>
+<tr>
+  <td>600x12</td>
+  <td style="text-align:right">3.8200</td>
+  <td>901-932</td>
+  <td>3001-3032</td>
+  <td style="text-align:right">3.876302%</td>
+  <td>3.775482%–3.977123%</td>
+  <td>True</td>
+</tr>
+<tr>
+  <td>600x15</td>
+  <td style="text-align:right">3.8200</td>
+  <td>901-932</td>
+  <td>4001-4032</td>
+  <td style="text-align:right">3.869792%</td>
+  <td>3.794014%–3.945570%</td>
+  <td>True</td>
+</tr>
+</tbody>
+</table>
+<p>Beta seed-bootstrap intervals use 1,000 resamples of training seeds; they do not propagate IRS fit uncertainty or ACS sampling error. Four decimal places are an execution convention, not four-decimal statistical certainty.</p>
+<p>The 3.8250 transfer to 600x12 failed on seeds 2001-2032 (mean 3.757378%, interval 3.665652%–3.849105%). That failure is retained. A separate 600x12 calibration and new seeds 3001-3032 validate 3.8200. The same 3.8250 control also passes on those new seeds; overlap and simulation noise do not prove systematic human preference changes with agent count.</p>
+<h2>Network and open-system controls</h2>
+<table>
+<thead>
+<tr>
+  <th>Decay</th>
+  <th style="text-align:right">Stay beta</th>
+  <th style="text-align:right">Validation mean</th>
+  <th style="text-align:right">Paired difference from closed baseline</th>
+  <th>Passed</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <td>2</td>
+  <td style="text-align:right">3.5980</td>
+  <td style="text-align:right">3.903212%</td>
+  <td style="text-align:right">0.026910 percentage points</td>
+  <td>True</td>
+</tr>
+<tr>
+  <td>5</td>
+  <td style="text-align:right">3.3125</td>
+  <td style="text-align:right">3.907552%</td>
+  <td style="text-align:right">0.031250 percentage points</td>
+  <td>True</td>
+</tr>
+<tr>
+  <td>10</td>
+  <td style="text-align:right">3.0678</td>
+  <td style="text-align:right">4.009549%</td>
+  <td style="text-align:right">0.133247 percentage points</td>
+  <td>False</td>
+</tr>
+</tbody>
+</table>
+<p>Decay 10 fails its paired validation and is excluded from validated defaults. It appears only as a labelled diagnostic. Unadjusted network changes are sensitivity scenarios. Recalibration keeps network comparisons on a common model-rate scale; it is not a new empirical estimate of social ties.</p>
+<p>PUMS outside-eight-state origin target: 62.02649264% (884486 / 1425981). Exchange attempts are conditional simulator control parameters, not real population move rates.</p>
+<table>
+<thead>
+<tr>
+  <th>Capacity mode</th>
+  <th style="text-align:right">Attempt rate</th>
+  <th style="text-align:right">Validation external share</th>
+  <th>95% simulation interval</th>
+  <th>Passed</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <td>shared</td>
+  <td style="text-align:right">0.0940</td>
+  <td style="text-align:right">61.924251%</td>
+  <td>61.322639%–62.525864%</td>
+  <td>True</td>
+</tr>
+<tr>
+  <td>scaled</td>
+  <td style="text-align:right">0.0678</td>
+  <td style="text-align:right">61.900124%</td>
+  <td>61.286174%–62.514074%</td>
+  <td>True</td>
+</tr>
+</tbody>
+</table>
+<p>Network/open controls use 600 agents and 12 years, training seeds 901-916 and validation seeds 3001-3032. Open validation requires mean bias at most 1.5 percentage points and a simulation interval covering the target. Scalar rounding occurs only after fitting, before simulation.</p>
+<h2>Historical precision control</h2>
+<p>A separate control preserves the original IRS fit and beta 3.9250. Final four-decimal rounding in network/open calibrations reproduces 752 historical rows, 704 unique cases and 5648 metrics with 0 mismatches. This resolves the numerical discrepancy, not the incomplete provenance of the old three-row beta table. The new report uses regenerated calibration tables instead.</p>
+<h2>Reproduction and limits</h2>
+<p>Install the pinned root requirements-project.txt with Python 3.10.18. Reproduce-Calibration.ps1 -Fresh backs up simulator checkpoints and reruns calibration. research/calibrate_15y.py covers the additional horizon; research/build_research.py and research/summaries.py rebuild all research tables. Checkpoints reject changed input fingerprints. Source URLs, hashes, protocols, grids, bootstrap samples and seed-level observations are shipped.</p>
+<p>Simulation t intervals describe uncertainty in seed means conditional on inputs and mechanisms; they exclude survey sampling error, structural error and causal uncertainty. Model social utility has no complete common-year eight-state BRFSS validation. Tulsa cash incentives are a scale reference only. Scenario and policy effects are conditional simulations, not validated forecasts.</p>
+<p>See ../../results/research/research-executed.html for the complete freshly executed research report, and ../../research/rebuild-report.json for experiment counts.</p>
+</body></html>

@@ -1,0 +1,4 @@
+,interaction,first_step_marginal_cost,cost_kink_intensity_2x,cost_kink_dollars_per_mover,response90_median,kink_before_response90
+0,medium,9029.411764705828,1.5,15000.0,3.5,True
+1,strong,9136.904761904743,1.5,15000.0,3.5,True
+2,weak,10578.512396694157,1.5,15000.0,4.0,True

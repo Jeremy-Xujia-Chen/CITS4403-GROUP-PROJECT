@@ -1,0 +1,31 @@
+{
+  "complete": true,
+  "profile": "new",
+  "simulation_rows": 4140,
+  "unique_simulations": 3838,
+  "static_competition_runs": 6,
+  "files": {
+    "baseline_runs.csv": 8,
+    "cross_experiment_runs.csv": 96,
+    "shock_runs.csv": 24,
+    "entrant_robustness_runs.csv": 16,
+    "social_threshold_sensitivity_runs.csv": 24,
+    "network_homophily_runs.csv": 16,
+    "parameter_sensitivity_runs.csv": 12,
+    "rent_feedback_sensitivity_runs.csv": 16,
+    "lever_intensity_sweep_runs.csv": 1056,
+    "state_intensity_sweep_runs.csv": 2112,
+    "network_decay_runs.csv": 384,
+    "open_system_runs.csv": 368,
+    "tulsa_reference_runs.csv": 8
+  },
+  "numeric_outputs_written": 26224,
+  "changed_metric_cells_from_published": 25208,
+  "betas_by_design": {
+    "1000x20": 3.825,
+    "600x12": 3.82,
+    "600x15": 3.82
+  },
+  "new_policy_grid_regenerated": true,
+  "decay10_scope": "Explicit failed-calibration diagnostic, excluded from validated policy conclusions and defaults."
+}

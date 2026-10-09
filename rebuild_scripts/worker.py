@@ -1,63 +1,105 @@
-"""Run one ABM case with the verbatim model code of 0914-1_v8.ipynb and return a rich metric record."""
-import numpy as np, pandas as pd, v8lib
-_G = None
-def G():
-    global _G
-    if _G is None: _G = v8lib.load()
-    return _G
+"""Run one notebook ABM case and return cached metrics plus mechanism diagnostics."""
 
-def make_policy(g, spec, target):
-    kind, x = spec[0], spec[1]
-    if kind == 'none': return g['policy_table']()
-    if kind == 'cross': return g['cross_policy'](spec[2], x) if len(spec) > 2 else None
-    if kind == 'lever': return g['lever_policy'](target, spec[2], x)
-    if kind == 'state': return g['policy_table'](state_incentives=x)
-    if kind == 'eq': return g['policy_table'](state_incentives={st: x for st in g['STATE_CODES']})
-    if kind == 'incentive': return g['policy_table'](target, migration_incentive=x)
-    if kind == 'scaled_combined':   # combined package, policy-effect scale via params handled by caller
-        return g['policy_table'](target, housing=x, employment=x, migration_incentive=x)
-    raise ValueError(kind)
+import argparse
+import json
+
+try:
+    from . import v8lib
+except ImportError:
+    import v8lib
+
+_namespace = None
+
+
+def validate_case(case, ns):
+    """Raise ValueError with a clear message for the first invalid field of a case."""
+    def choice(field, value, valid):
+        if value not in valid:
+            raise ValueError(f"Unknown {field} {value!r}; expected one of {sorted(valid)}.")
+
+    choice("interaction", case.get("interaction", "medium"), ns["INTERACTION_LEVELS"])
+    choice("policy", case.get("policy", "baseline"), ns["POLICY_TYPES"])
+    choice("target_state", case.get("target_state", ns["FOCAL_STATE"]), ns["STATE_CODES"])
+    if "shock" in case:
+        choice("shock", case["shock"], ns["SHOCK_SCENARIOS"])
+    if "n_agents" in case and int(case["n_agents"]) < 2:
+        raise ValueError(f"n_agents must be at least 2, got {case['n_agents']!r}.")
+    if "years" in case and int(case["years"]) < 1:
+        raise ValueError(f"years must be at least 1, got {case['years']!r}.")
+    if float(case.get("intensity", 1.0)) < 0:
+        raise ValueError(f"intensity must not be negative, got {case['intensity']!r}.")
+    if "capacity_mode" in case and "external_rate" not in case:
+        raise ValueError("capacity_mode requires external_rate.")
+
 
 def run(case):
-    g = G()
-    c = dict(case)
-    target = c.get('target', g['FOCAL_STATE'])
-    params = dict(g['PARAMS'])
-    params.update(c.get('params', {}))
-    g['FOCAL_STATE'] = target
-    pol = make_policy(g, c['policy'], target)
-    shocks = g['SHOCK_SCENARIOS'][c['shock']] if c.get('shock') else None
-    m = g['PolicySocialABM'](g['state_data'], pol, n_agents=c.get('n', 600), years=c.get('years', 12),
-                             seed=c['seed'], params=params,
-                             interaction_strength=g['INTERACTION_LEVELS'][c.get('interaction', 'medium')],
-                             shocks=shocks, entrant_home_local=c.get('home_local', False),
-                             entrant_network_home_bias=c.get('net_bias', False),
-                             network_homophily_share=c.get('homophily', 0.0))
-    h, moves, _ = m.run()
-    mech = m.mechanism_history()
-    s = g['summarise_v7_run'](m, h, target)
-    sysl = h.groupby('year').first()
-    out = dict(case_id=c['id'], target=target, **s)
-    out['agent_years'] = h.groupby('year')['population'].sum().sum()
-    out['target_accepted'] = mech['target_accepted'].sum()
-    out['target_proposed'] = mech['target_proposed'].sum()
-    for k in ['target_origin_attachment_sum', 'target_social_cost_n', 'target_social_cost_sum', 'target_chain_moves', 'target_housing_rejected']:
-        if k in mech: out[k] = mech[k].sum()
-    out['mover_origin_attachment'] = out.get('target_origin_attachment_sum', np.nan) / max(out.get('target_social_cost_n', 1), 1)
-    for col in ['peer_colocation', 'coorigin_clustering', 'population_hhi', 'move_rate', 'housing_rejection_rate',
-                'mean_social_utility_index', 'mean_rent_burden_system', 'births', 'unfilled_jobs']:
-        out[col + '_mean'] = sysl[col].mean(); out[col + '_final'] = sysl[col].iloc[-1]
-    tgt = h[h['state'] == target]
-    out['target_rent_final'] = tgt['rent_index'].iloc[-1]; out['target_rent_mean'] = tgt['rent_index'].mean()
-    out['target_inflow_hist'] = tgt['inflow'].sum()
-    for st, gs in h.groupby('state'):
-        out[f'net_final_{st}'] = gs['net_migration'].iloc[-1]; out[f'net_mean_{st}'] = gs['net_migration'].mean()
-        out[f'net_sum_{st}'] = gs['net_migration'].sum()
-        out[f'emp_final_{st}'] = gs['employment_rate'].iloc[-1]; out[f'unf_final_{st}'] = gs['unfilled_jobs_state'].iloc[-1]
-        out[f'pop_final_{st}'] = gs['population'].iloc[-1]
-    out['mech_cols'] = ','.join(mech.columns)
-    out['move_series'] = list(sysl['move_rate'])
-    out['inflow_all_rate'] = h['inflow'].sum() / out['agent_years']
-    out['pop_series'] = list(h.groupby('year')['population'].sum())
-    out['hh_moves'] = len(moves)
-    return out
+    global _namespace
+    if _namespace is None:
+        _namespace = v8lib.load()
+    ns = _namespace
+    case = dict(case)
+    validate_case(case, ns)
+    seed = int(case.get("seed", 201))
+    interaction = case.get("interaction", "medium")
+    target = case.get("target_state", ns["FOCAL_STATE"])
+    policy = case.get("policy", "baseline")
+    intensity = float(case.get("intensity", 1.0))
+    n_agents = int(case.get("n_agents", ns["EXPERIMENT_AGENTS"]))
+    years = int(case.get("years", ns["EXPERIMENT_YEARS"]))
+    params = dict(ns["PARAMS"], **case.get("params", {}))
+    if "beta_current_state" not in case and "beta_current_state" not in case.get("params", {}):
+        params["beta_current_state"] = ns.get("BETA_BY_DESIGN", {}).get(f"{n_agents}x{years}", params["beta_current_state"])
+    if "beta_current_state" in case:
+        params["beta_current_state"] = float(case["beta_current_state"])
+    saved = ns["FOCAL_STATE"]
+    ns["FOCAL_STATE"] = target
+    try:
+        if "lever" in case:
+            policies = ns["lever_policy"](target, case["lever"], intensity)
+        else:
+            policies = ns["cross_policy"](policy, intensity)
+        kw = dict(seed=seed, n_agents=n_agents, years=years, params=params,
+                  interaction_strength=ns["INTERACTION_LEVELS"][interaction])
+        for key in ["entrant_home_local", "entrant_network_home_bias", "network_homophily_share"]:
+            if key in case:
+                kw[key] = case[key]
+        if "shock" in case:
+            kw["shocks"] = ns["SHOCK_SCENARIOS"][case["shock"]]
+        decay = float(case.get("network_decay", 0.0))
+        model_cls = ns["DistanceDecayABM"] if decay else ns["PolicySocialABM"]
+        if decay:
+            kw["network_decay"] = decay
+        if "capacity_mode" in case:
+            model_cls = ns["OpenSystemABM"]
+            kw.update(external_rate=float(case["external_rate"]), capacity_mode=case["capacity_mode"])
+        model = model_cls(ns["state_data"], policies, **kw)
+        history, moves, _ = model.run()
+        system = history.groupby("year").first()
+        summary = ns["summarise_v7_run"](model, history, target)
+        state_idx = model._state_indices()
+        result = {**case, "target_state": target, "seed": seed, "interaction": interaction,
+                  "beta_current_state_used": params["beta_current_state"],
+                  "n_agents": n_agents, "years": years, **summary,
+                  "move_rate": float(system["move_rate"].mean()),
+                  "same_state_contact_share": float(ns["np"].mean(state_idx[model.network] == state_idx[:, None])),
+                  "moves_recorded": len(moves), "mechanism_rows": len(model.mechanism_history())}
+        for key in ["peer_colocation", "social_utility_index", "unfilled_jobs"]:
+            if key in system:
+                result[key] = float(system[key].mean())
+        if "capacity_mode" in case:
+            ext = ns["pd"].DataFrame(model.external_rows)
+            agent_years = history.groupby("year")["population"].sum().sum()
+            internal = (system["move_rate"] * history.groupby("year")["population"].sum()).sum()
+            mech = model.mechanism_history()
+            result.update(target_total_inflow_rate=(mech["target_accepted"].sum() + ext["target_external_accepted"].sum()) / agent_years,
+                          external_share_system=ext["external_accepted"].sum() / max(ext["external_accepted"].sum() + internal, 1),
+                          housing_rejection=(mech["target_housing_rejected"].sum() + ext["target_external_rejected"].sum()) / max(mech["target_proposed"].sum() + ext["target_external_proposed"].sum(), 1))
+        return result
+    finally:
+        ns["FOCAL_STATE"] = saved
+
+
+if __name__ == "__main__":
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("case", help='JSON object, e.g. {"policy":"combined","seed":201}')
+    print(json.dumps(run(json.loads(parser.parse_args().case)), indent=2, default=float))
