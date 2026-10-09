@@ -123,13 +123,34 @@ def make_comparison(namespace, *, n_agents=600, years=12, seed=201):
     return from_runs(runs, namespace['STATE_COORDS'], target_state=namespace['FOCAL_STATE'], seed=seed)
 
 
-def main():
+def build_parser():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--output', type=Path, default=Path('migration_animation.html'))
     parser.add_argument('--agents', type=int, default=600)
     parser.add_argument('--years', type=int, default=12)
     parser.add_argument('--seed', type=int, default=201)
-    args = parser.parse_args()
+    return parser
+
+
+def parse_args(argv=None):
+    """Parse and validate command-line arguments before any model is loaded."""
+    parser = build_parser()
+    args = parser.parse_args(argv)
+    if args.agents < 2:
+        parser.error('--agents must be at least 2')
+    if args.years < 1:
+        parser.error('--years must be at least 1')
+    if args.seed < 0:
+        parser.error('--seed must not be negative')
+    if args.output.suffix.lower() not in ('.html', '.htm'):
+        parser.error('--output must end in .html or .htm')
+    if not args.output.resolve().parent.is_dir():
+        parser.error(f'--output directory does not exist: {args.output.resolve().parent}')
+    return args
+
+
+def main(argv=None):
+    args = parse_args(argv)
     from rebuild_scripts.v8lib import load
     namespace = load(Path(__file__).with_name('0914-1_v8.ipynb'))
     animation = make_comparison(namespace, n_agents=args.agents, years=args.years, seed=args.seed)
